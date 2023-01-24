@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     <!-- Cargar la carpeta static -->
+     {% load static %}
+     <meta charset="utf-8" />
+     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+     <meta name="description" content="" />
+     <meta name="author" content="" />
+     <title>Mis Pedidos</title>
+     <!-- Favicon-->
+     <link rel="icon" type="image/x-icon" href="{% static 'ProyectoWebApp/assets/icono.png' %}" />
+     <!-- Font Awesome icons (free version)-->
+     <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+     <!-- Google fonts-->
+     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+     <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
+     <!-- Core theme CSS (includes Bootstrap)-->
+     <link href="{% static 'ProyectoWebApp/css/styles.css' %}" rel="stylesheet" />
+ 
+     <!-- ALERTYFY JS -->
+     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+     <!-- Default theme -->
+     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
+</head>
+<body id="page-top">
+    <!-- Navigation-->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark" id="mainNav">
+        <div class="container">
+            <i class="navbar-brand">Gestion De Pedidos</i>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                Menu
+                <i class="fas fa-bars ms-1"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'Index' %}">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'Productos' %}">Productos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'Carro' %}"><i class="fas fa-shopping-cart"></i><span id="contadorCarrito">{{long_productos}}</span></a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            {{user.username}}
+                        </a>
+                        <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Perfil</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{% url 'cerrar_sesion' %}">Cerrar Sesión</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <br><br><br><br><br>
+    <div class="container my-3">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card shadow">
+                    <div class="card-header">
+                        <h3 class="mb-0">
+                            Información
+                            <a href="{% url 'Pedidos' %}" class="btn btn-danger float-end"><i class="fa fa-reply"></i> Volver</a>
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h4>Detalles Del Envio</h4>
+                                <hr>
+                                <label class="mt-2"><b>Nombre</b></label>
+                                <div class="border p-1">{{pedido.nombre}}</div>
+                                <label class="mt-2"><b>Apellido</b></label>
+                                <div class="border p-1">{{pedido.apellido}}</div>
+                                <label class="mt-2"><b>Email</b></label>
+                                <div class="border p-1">{{pedido.email}}</div>
+                                <label class="mt-2"><b>Telefono</b></label>
+                                <div class="border p-1">{{pedido.telefono}}</div>
+                                <label class="mt-2"><b>Dirección</b></label>
+                                <div class="border p-1">
+                                    {{pedido.direccion}}
+                                    {{pedido.ciudad}}
+                                    {{pedido.estado}}
+                                    {{pedido.pais}}
+                                </div>
+                                <label class="mt-2"><b>Código PIN</b></label>
+                                <div class="border p-1">{{pedido.codigo_pin}}</div>
+                            </div>
+                            <div class="col-md-6">
+                                <h4>Detalles Del Pedido</h4>
+                                <hr>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Nombre</th>
+                                            <th>Cantidad</th>
+                                            <th>Precio</th>
+                                            <th>Imagen</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for articulo in articulosPedido %}
+                                            <tr>
+                                                <td>{{articulo.producto.nombre}}</td>
+                                                <td>{{articulo.cantidad}}</td>
+                                                <td>{{articulo.precio}}</td>
+                                                <td><img src="{{articulo.producto.imagen.url}}" height="80px", width="80px"></td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                <h4>Precio Total: <span class="float-end">${{pedido.precio_total}}</span>
+                                <h6 class="border p-2">Modo De Pago: {{pedido.modo_pago}}</h6>
+                                <h6 class="border p-2">Estado Del Pedido: {{pedido.estado_pedido}}</h6> 
+                                <h6 class="border p-2">Numero De Seguimiento: {{pedido.numero_seguimiento}}</h6>
+                                <h6 class="border p-2">Fecha: {{pedido.created}}</h6>  
+                            </div>
+                        </div>        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>        
+</body>
+</html>
